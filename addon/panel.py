@@ -26,7 +26,7 @@ class BLENDBRIDGE_PT_sidebar(bpy.types.Panel):
     bl_idname = "BLENDBRIDGE_PT_sidebar"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = "RPC"
+    bl_category = "Bridge"
 
     def draw(self, context):
         layout = self.layout

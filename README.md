@@ -32,6 +32,28 @@ The addon automatically installs `pyzmq` into Blender's Python on first enable. 
 
 Start the server: Open the **3D Viewport sidebar (N) -> RPC tab -> Start Server**.
 
+### Troubleshooting: "module zmq has no attribute 'context'"
+
+If you see this error when starting the server, the pyzmq installation in Blender's Python is corrupted:
+
+```python
+Failed to start server: module 'zmq' has no attribute 'context'
+```
+
+**Fix:** Uninstall and reinstall pyzmq using Blender's Python directly:
+
+```powershell
+# Windows
+& "C:\Program Files\Blender Foundation\Blender 4.5\4.5\python\bin\python.exe" -m pip uninstall pyzmq -y
+& "C:\Program Files\Blender Foundation\Blender 4.5\4.5\python\bin\python.exe" -m pip install pyzmq
+
+# Linux/macOS
+/path/to/blender/4.5/python/bin/python3.11 -m pip uninstall pyzmq -y
+/path/to/blender/4.5/python/bin/python3.11 -m pip install pyzmq
+```
+
+Then restart Blender and re-enable the addon.
+
 ### 2. Install the Client (caller side)
 
 Only needed if you want to call Blender from an external Python process or CLI.
@@ -98,8 +120,8 @@ The protocol is JSON over ZMQ. Today we ship a Python client; anything with a ZM
 │  ├─ export_obj/stl/glb() │   │                  │   │     ├─ export.py         │
 │  ├─ render()             │   │  Request:        │   │     └─ render.py         │
 │  └─ launch()             │   │  {command, id,   │   │                          │
-│                          │   │   params}         │   │  contrib/               │
-│  Exceptions:             │   │                  │   │  └─ spring_generator/   │
+│                          │   │   params}         │   │  (see docs/               │
+│  Exceptions:             │   │                  │   │   writing_handlers.md)   │
 │  ├─ RPCError             │   │  Response:       │   │                          │
 │  ├─ RPCTimeoutError      │   │  {status, id,   │   └──────────────────────────┘
 │  └─ RPCConnectionError   │   │   result|error}  │
@@ -216,11 +238,10 @@ addon/                  Blender addon (ships as zip, not part of pip package)
   server.py             ZMQ REP socket + bpy.app.timers poll loop
   router.py             Message dispatch (command -> handler)
   registry.py           @rpc_handler decorator + handler registry
-  handlers/             Built-in handlers (scene, export, render)
+  handlers/             Built-in handlers (scene, export, render, blendgenerators)
   ops.py                Blender operators (start/stop server)
   panel.py              Sidebar UI panel (status, controls, handler list)
   preferences.py        Addon preferences (host, port, autostart)
-contrib/                Domain-specific handlers (spring generator)
 scripts/                Build and install helpers
 examples/               Usage examples
 tests/unit/             151 unit tests (pytest)

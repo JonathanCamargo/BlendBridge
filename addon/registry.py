@@ -32,7 +32,7 @@ def rpc_handler(command_name: str):
 
 
 def register_handler(name: str, fn: Callable) -> None:
-    """Programmatic alternative to @rpc_handler — used by contrib/ and tests."""
+    """Programmatic alternative to @rpc_handler — used by tests."""
     _HANDLERS[name] = fn
 
 

@@ -4,7 +4,13 @@ Importing this package triggers side-effect registration of every
 handler via the @rpc_handler decorator. Called from addon/__init__.py's
 register() hook so the registry is populated the moment the addon
 is enabled.
+
+Handler modules are discovered automatically — just drop a ``.py`` file
+into this directory and its ``@rpc_handler`` decorated functions will
+be registered on the next addon reload.  No need to edit this file.
 """
-from . import scene   # noqa: F401 — side-effect: registers ping, scene_info, clear_scene, list_handlers
-from . import export  # noqa: F401 — side-effect: registers export_obj, export_stl, export_glb
-from . import render  # noqa: F401 — side-effect: registers render
+import importlib
+import pkgutil
+
+for _info in pkgutil.iter_modules(__path__):
+    importlib.import_module(f".{_info.name}", __package__)

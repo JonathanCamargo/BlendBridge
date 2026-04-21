@@ -137,7 +137,7 @@ result = client.call("create_sphere", radius=-1)
 
 Handlers are discovered through Python's import system. When the addon loads, `addon/__init__.py` calls `register()`, which imports `addon.handlers`. Each module in `handlers/` uses `@rpc_handler` to register its functions.
 
-For handlers outside the addon package (contrib, plugins), import them in a startup script:
+For handlers outside the addon package (plugins), import them in a startup script:
 
 ```python
 # my_startup.py
@@ -146,9 +146,9 @@ sys.path.insert(0, "/path/to/my/handlers")
 import my_handlers  # triggers @rpc_handler decorators
 ```
 
-## Contrib Handlers
+## Adding New Handlers
 
-Domain-specific handlers live in `contrib/`, not in the core addon. This keeps the core generic. See `contrib/spring_generator/` for the reference implementation.
+Domain-specific handlers can be added to `addon/handlers/` alongside the built-in ones. Each module uses `@rpc_handler` to register its functions. The BlendGenerators handler (`blendgenerators_handler.py`) demonstrates the pattern for optional dependencies — using `_ensure_blendgenerators()` to defer imports so registration always succeeds.
 
 The pattern:
 1. Pure geometry function (no bpy operators, no UI)
