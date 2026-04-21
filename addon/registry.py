@@ -49,3 +49,8 @@ def list_handlers() -> dict[str, str]:
     values.
     """
     return {name: (fn.__doc__ or "") for name, fn in _HANDLERS.items()}
+
+
+def iter_handlers():
+    """Yield (name, fn) pairs for every registered handler."""
+    return _HANDLERS.items()

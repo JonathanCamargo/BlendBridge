@@ -143,6 +143,7 @@ def register() -> None:
         )
     for cls in _CLASSES:
         bpy.utils.register_class(cls)
+    panel.register_group_props()
     preferences.register_autostart()
 
 
@@ -150,6 +151,7 @@ def unregister() -> None:
     if not _ZMQ_OK:
         return
     preferences.unregister_autostart()
+    panel.unregister_group_props()
     try:
         server.stop_server()
     except Exception:
