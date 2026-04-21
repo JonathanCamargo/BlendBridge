@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blendbridge"
+version = "0.1.0"
+description = "ZeroMQ RPC framework that exposes Blender as a geometry/render microservice"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Jonathan", email = "jonathan@roboticos.co" },
+]
+keywords = ["blender", "rpc", "zeromq", "geometry", "3d"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "pyzmq>=25",
+    "click>=8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pyyaml>=6",
+]
+
+[project.scripts]
+blendbridge = "blendbridge.client.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jcl00/blendbridge"
+Repository = "https://github.com/jcl00/blendbridge"
+Issues = "https://github.com/jcl00/blendbridge/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["blendbridge*"]
+exclude = ["addon*", "tests*", "scripts*", "contrib*", "examples*", "docs*", "dist*", "build*"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests/unit"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
